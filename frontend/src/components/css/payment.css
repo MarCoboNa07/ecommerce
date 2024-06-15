@@ -1,0 +1,57 @@
+:root {
+    --primary: #0b57d0;
+    --secondary: #c2c2c2;
+    --text-color: #1d1d1d;
+}
+
+.payment-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.payment-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.payment-left svg {
+    width: 150px;
+    height: 150px;
+    color: #c2c2c2;
+}
+
+.payment-left h2 {
+    margin-top: 12px;
+    color: var(--text-color);
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.payment-right {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+@media screen and (max-width: 800px) {
+    .payment-container {
+        flex-direction: column;
+    }
+
+    .payment-left {
+        width: 100%;
+        height: auto;
+        margin: 40px 0;
+    }
+
+    .payment-right {
+        width: 100%;
+        height: auto;
+    }
+}

@@ -1,0 +1,82 @@
+:root {
+    --primary: #0b57d0;
+    --secondary: #c2c2c2;
+    --text-color: #1d1d1d;
+    --error: #df1b41;
+}
+
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+}
+
+#payment-element {
+    width: 100%;
+    padding: 20px;
+}
+
+.form-spinner {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+.spinner {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #ffffff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#pay-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--primary);
+    cursor: pointer;
+}
+
+#pay-btn:hover {
+    background-color: rgba(11, 87, 208, 0.8);
+}
+
+#pay-btn svg {
+    margin: 0 6px;
+}
+
+#pay-btn.loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+#pay-btn.loading .spinner {
+    display: inline-block;
+}
+
+.error-message {
+    color: var(--error);
+    margin-top: 12px;
+    text-align: center;
+}
