@@ -7,6 +7,7 @@ const conn = require('../db_connection'); // Importazione della connessione al d
 
 const router = express.Router();
 const JWT_SECRET = 'UTTXiLswRerAFSrmuttC0pw9U7adGsYoSLFiWMhKSJPDHZESTpX1Jrkx4hZqWAm6EKnCOYwf9cOjnXyh9O4Nhju8ySLaIqRYy5Awie2Iy6ZphCSe3ENmp5okeC8sYoCosG4cWNaoKrnIcxwzAtJyJaNky6gaG0kM76C3r4SwP2StFub75LP7gWRO6we4glzHsRmZGFPW';
+const JWT_REFRESH_SECRET = 'aUdHapMHIb482BTrZXKBUYGQHtnfa8yXr6yO0WXrT4R6QMMDOOalm2Jkc4rHBDTfAwRyG391GKI6m45YP13mMLQPXVmTDcn0Xs0gKTzNSQ0xS0qbF0z598jQzaUck7NnAUvknEPDuGF6PpvsuP0gmYACSX1hqZ3BP28wk5DcakTGINw0kdRzT6WhIaPlBJfg6RYHKELF';
 
 const query = promisify(conn.query).bind(conn);
 
@@ -46,7 +47,9 @@ router.post('/register', async (req, res) => {
 
         // Generazione del token jwt
         const token = jwt.sign({ user_id }, JWT_SECRET, { expiresIn: '1h' });
-        res.status(201).json({ token });
+        const refreshToken = jwt.sign({ user_id }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
+        
+        res.status(201).json({ token, refreshToken });
     } catch (error) {
         console.error("Errore durante la registrazione: ", error);
         res.status(500).json({ error: "Errore durante la registrazione" });

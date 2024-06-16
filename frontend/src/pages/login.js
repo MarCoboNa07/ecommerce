@@ -37,7 +37,13 @@ function Login() {
         try {
             const response = await axios.post('/api/login', formData); // Risposta del server
 
-            localStorage.setItem('token', response.data.token) // Salva il token JWT nel local storage
+            // Salva i token JWT nel local storage
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
+
+            // Imposta il timer per il refresh token
+            setTimeout(refreshToken, (55 * 60) * 1000); // Timer di 55 minuti
+
             setIsLoggedIn(true);
             setRedirect(true);
         } catch (error) {
@@ -45,26 +51,31 @@ function Login() {
         }
     }
 
+    // Funzione per il refresh del token jwt
+    async function refreshToken() {
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        if (!refreshToken) {
+            console.error('Token di refresh mancante');
+            return;
+        }
+
+        try {
+            const response = await axios.post('/api/refresh-jwt-token', { refreshToken });
+
+            // Aggiorna il token nel localStorage
+            localStorage.setItem('token', response.data.token);
+
+            // Reimposta il timer per il refresh
+            setTimeout(refreshToken, 55 * 60 * 1000); // Timer di 55 minuti
+        } catch (error) {
+            console.error('Errore durante il refresh del token:', error.response.data.error); // Errore nel refresh del token restituito dal server
+        }
+    }
+
     // Funzione che permette di modificare gli input
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
-
-    // // FUnzione che invia una richiesta al server Django e restituisce la risposta
-    async function handleSubmit(e) {
-        e.preventDefault();
-        try {
-            const response = await axios.post('/api/login/', formData); // Risposta del server Django
-
-            const csrfToken = response.data.csrfToken; // Ottieni il token CSRF
-            axios.defaults.headers.common['X-CSRFToken'] = csrfToken; // Imposta il token CSRF come header della richiesta
-
-            localStorage.setItem('token', response.data.token) // Salva il token JWT nel local storage
-            setIsLoggedIn(true);
-            setRedirect(true);
-        } catch (error) {
-            setError(error.response.data.error); // Errore nel login restituito dal server Django
-        }
     }
 
     // Funzione per mostrare la password quando si clicca la checkbox
@@ -111,35 +122,35 @@ function Login() {
                             <div className="text-field">
                                 <label htmlFor="email">
                                     Email:
-                                    <input 
-                                        type="email" 
-                                        id="email" 
-                                        name="email" 
-                                        autoComplete="off" 
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        autoComplete="off"
                                         placeholder="Email"
                                         value={formData.email}
-                                        onChange={handleChange} 
-                                        required 
+                                        onChange={handleChange}
+                                        required
                                     />
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-at" viewBox="0 0 16 16">
-                                        <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914"/>
+                                        <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914" />
                                     </svg>
                                 </label>
                             </div>
                             <div className="text-field">
                                 <label htmlFor="password">
                                     Password:
-                                    <input 
-                                        type="password" 
-                                        id="password" 
-                                        name="password" 
-                                        placeholder="Password" 
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Password"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                     />
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-lock" viewBox="0 0 16 16">
-                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/>
+                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1" />
                                     </svg>
                                 </label>
                             </div>
@@ -188,35 +199,35 @@ function Login() {
                             <div className="text-field">
                                 <label htmlFor="email">
                                     Email:
-                                    <input 
-                                        type="email" 
-                                        id="email" 
-                                        name="email" 
-                                        autoComplete="off" 
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        autoComplete="off"
                                         placeholder="Email"
                                         value={formData.email}
-                                        onChange={handleChange} 
-                                        required 
+                                        onChange={handleChange}
+                                        required
                                     />
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-at" viewBox="0 0 16 16">
-                                        <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914"/>
+                                        <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914" />
                                     </svg>
                                 </label>
                             </div>
                             <div className="text-field">
                                 <label htmlFor="password">
                                     Password:
-                                    <input 
-                                        type="password" 
-                                        id="password" 
-                                        name="password" 
-                                        placeholder="Password" 
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Password"
                                         value={formData.password}
                                         onChange={handleChange}
-                                        required 
+                                        required
                                     />
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-lock" viewBox="0 0 16 16">
-                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/>
+                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1" />
                                     </svg>
                                 </label>
                             </div>

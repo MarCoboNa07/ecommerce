@@ -44,11 +44,39 @@ function Register() {
         try {
             const response = await axios.post('/api/register', formData); // Risposta del server
 
-            localStorage.setItem('token', response.data.token) // Salva il token JWT nel local storage
+            // Salva i token JWT nel local storage
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
+
+            // Imposta il timer per il refresh token
+            setTimeout(refreshToken, (55 * 60) * 1000); // Timer di 55 minuti
+
             setIsLoggedIn(true);
             setRedirect(true);
         } catch (error) {
-            console.error('Errore durante la registrazione:', error);
+            setError(error.response.data.error); // Errore nella registrazione restituito dal server
+        }
+    }
+
+    // Funzione per il refresh del token jwt
+    async function refreshToken() {
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        if (!refreshToken) {
+            console.error('Token di refresh mancante');
+            return;
+        }
+
+        try {
+            const response = await axios.post('/api/refresh-jwt-token', { refreshToken });
+
+            // Aggiorna il token nel localStorage
+            localStorage.setItem('token', response.data.token);
+
+            // Reimposta il timer per il refresh
+            setTimeout(refreshToken, 55 * 60 * 1000); // Timer di 55 minuti
+        } catch (error) {
+            console.error('Errore durante il refresh del token:', error.response.data.error); // Errore nel refresh del token restituito dal server
         }
     }
 
