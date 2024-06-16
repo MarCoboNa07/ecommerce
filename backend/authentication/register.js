@@ -28,7 +28,7 @@ router.post('/register', async (req, res) => {
 
     try {
         // Verifica se l'email è già registrata
-        const existingUsers = await query('SELECT * FROM authentication_user WHERE email = ?', [email]);
+        const existingUsers = await query('SELECT * FROM users WHERE email = ?', [email]);
 
         if (existingUsers.length > 0) {
             return res.status(409).json({ error: 'Email già registrata' }); // Restituisce un errore se l'email è già registrata
@@ -41,7 +41,7 @@ router.post('/register', async (req, res) => {
         const user_id = generateUserId(30);
 
         // Inserimento dei dati nel database
-        await query('INSERT INTO authentication_user (user_id, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)', [user_id, firstName, lastName, email, hashedPassword]);
+        await query('INSERT INTO users (user_id, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)', [user_id, firstName, lastName, email, hashedPassword]);
 
         // Generazione del token jwt
         const token = jwt.sign({ user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });

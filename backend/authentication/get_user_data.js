@@ -31,7 +31,7 @@ router.get('/user', token, async (req, res) => {
         // Ottieni l'id dal token jwt
         const user_id = req.user.user_id;
 
-        const sql = 'SELECT * FROM authentication_user WHERE user_id = ?';
+        const sql = 'SELECT * FROM users WHERE user_id = ?';
         const userData = await query(sql, [user_id]);
 
         if (userData.length === 0) {

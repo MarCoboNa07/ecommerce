@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
 
     try {
         // Verifica se l'email è registrata
-        const users = await query('SELECT * FROM authentication_user WHERE email = ?', [email]);
+        const users = await query('SELECT * FROM users WHERE email = ?', [email]);
 
         if (users.length === 0) {
             return res.status(401).json({ error: 'Utente non registrato' }); // Restituisce un errore se l'email non è registrata
