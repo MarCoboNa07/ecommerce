@@ -9,7 +9,7 @@ const getUserData = require('./authentication/get_user_data');
 const logout = require('./authentication/logout');
 
 const app = express();
-const PORT = 5000;
+const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors()); // Cors per l'autenticazione sicura
@@ -22,6 +22,6 @@ app.use('/api', getUserData);
 app.use('/api', logout);
 
 // Avvio del server
-app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
 });
