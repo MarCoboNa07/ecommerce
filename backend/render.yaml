@@ -1,0 +1,20 @@
+services:
+  - name: server
+    buildCommand: npm install
+    startCommand: npm start
+    env: true
+    envFiles:
+      - .env
+  - name: bfct8hmjv7oy69xuszhy
+    type: mysql
+    env:
+      - key: DB_NAME
+        fromService: server
+      - key: DB_USER
+        fromService: server
+      - key: DB_PASSWORD
+        fromService: server
+      - key: DB_HOST
+        value: bfct8hmjv7oy69xuszhy-mysql.services.clever-cloud.com
+      - key: DB_PORT
+        value: 21667
