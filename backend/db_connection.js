@@ -1,12 +1,13 @@
 const mysql = require('mysql2'); // Importazione del modulo mysql2
+require('dotenv').config(); // Importazione modulo dotenv per l'utilizzo di variabili d'ambiente
 
-// COnfigurazione della connessione al database
+// Configurazione della connessione al database
 const dbConfig = {
-    host: 'localhost',
-    port: '3306',
-    user: 'root',
-    password: 'PerlA.2007_',
-    database: 'ecommerce',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 };
 
 // Creazione della connessione al database

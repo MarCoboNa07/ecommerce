@@ -32,7 +32,7 @@ function Navbar() {
             setIsLoggedIn(true); // Utente autenticato
 
             // Richiesta all'API user per prendere i dati dell'utente 
-            axios.get('/api/user/', {
+            axios.get('/api/user', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

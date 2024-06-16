@@ -5,6 +5,7 @@ const bodyParser = require('body-parser'); // Importazione del modulo body-parse
 // Importazione delle routes
 const register = require('./authentication/register');
 const login = require('./authentication/login');
+const getUserData = require('./authentication/get_user_data');
 const logout = require('./authentication/logout');
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(bodyParser.json()) // Parsing application/json
 // Utilizzo delle routes
 app.use('/api', register);
 app.use('/api', login); 
+app.use('/api', getUserData);
 app.use('/api', logout);
 
 // Avvio del server
