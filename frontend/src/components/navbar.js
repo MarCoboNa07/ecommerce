@@ -51,7 +51,7 @@ function Navbar() {
     // Funzione per ottenere l'id dell'utente dal database
     async function getUserId(token) {
         try {
-            const response = await axios.get('/api/user/', { // Risposta del server Django
+            const response = await axios.get('/api/user', { // Risposta del server
                 headers: {
                     'Authorization': `Bearer ${token}` // Imposta il token JWT come header della richiesta
                 }
