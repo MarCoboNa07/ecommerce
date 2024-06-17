@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "proxy": "https://ecommerce-vscs.onrender.com",
   "private": true,
   "dependencies": {
     "@stripe/react-stripe-js": "^2.7.1",
