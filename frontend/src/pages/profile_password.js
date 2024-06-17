@@ -39,7 +39,7 @@ function ProfilePassword() {
 
             async function getUserData() {
                 try {
-                    const response = await axios.get('https://ecommerce-vscs.onrender.com/api/user/', {
+                    const response = await axios.get('/api/user/', {
                         headers: {
                             'Authorization': `Bearer ${token}` // Imposta il token JWT come header della richiesta
                         }
@@ -67,7 +67,7 @@ function ProfilePassword() {
         setFormError(null);
 
         try {
-            const response = await axios.post('https://ecommerce-vscs.onrender.com/api/change-password/', formData, {
+            const response = await axios.post('/api/change-password/', formData, {
                 headers: {
                     'Authorization': `Bearer ${token}` // Imposta il token JWT come header della richiesta
                 }
@@ -97,7 +97,7 @@ function ProfilePassword() {
     // Funzione di logout
     async function handleLogout() {
         try {
-            await axios.post('https://ecommerce-vscs.onrender.com/api/logout/'); // Richiesta all'API di logout
+            await axios.post('/api/logout/'); // Richiesta all'API di logout
             localStorage.removeItem('token'); // Elimina il token JWT dal local storage
             setIsLoggedIn(false);
             setRedirect(true);
