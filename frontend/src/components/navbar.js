@@ -32,7 +32,7 @@ function Navbar() {
             setIsLoggedIn(true); // Utente autenticato
 
             // Richiesta all'API user per prendere i dati dell'utente 
-            axios.get('/api/user', {
+            axios.get('https://ecommerce-vscs.onrender.com/api/user', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -51,7 +51,7 @@ function Navbar() {
     // Funzione per ottenere l'id dell'utente dal database
     async function getUserId(token) {
         try {
-            const response = await axios.get('/api/user', { // Risposta del server
+            const response = await axios.get('https://ecommerce-vscs.onrender.com/api/user', { // Risposta del server
                 headers: {
                     'Authorization': `Bearer ${token}` // Imposta il token JWT come header della richiesta
                 }
