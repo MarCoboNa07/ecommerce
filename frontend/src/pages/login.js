@@ -35,7 +35,7 @@ function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/login', formData); // Risposta del server
+            const response = await axios.post('https://ecommerce-vscs.onrender.com/api/login', formData); // Risposta del server
 
             // Salva i token JWT nel local storage
             localStorage.setItem('token', response.data.token);
@@ -61,7 +61,7 @@ function Login() {
         }
 
         try {
-            const response = await axios.post('/api/refresh-jwt-token', { refreshToken });
+            const response = await axios.post('https://ecommerce-vscs.onrender.com/api/refresh-jwt-token', { refreshToken });
 
             // Aggiorna il token nel localStorage
             localStorage.setItem('token', response.data.token);
