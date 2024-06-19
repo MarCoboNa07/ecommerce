@@ -64,15 +64,30 @@ function ProfileAccount() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
+    async function getUserId(token) {
+        try {
+            const response = await axios.get('https://ecommerce-vscs.onrender.com/api/user/', {
+                headers: {
+                    'Authorization': `Bearer ${token}` // Imposta il token JWT come header della richiesta
+                }
+            });
+            return response.data.user_id;
+        } catch (error) {
+            console.error("Failed to fetch user data: ");
+        }
+    }
+
     async function handleSubmit(e) {
         const token = localStorage.getItem('token'); // Ottieni il token JWT dal local storage
+        const user_id = await getUserId(token);
+
         e.preventDefault();
 
         setMessage(null);
         setFormError(null);
 
         try {
-            const response = await axios.post('https://ecommerce-vscs.onrender.com/api/update-user-data/', formData, {
+            const response = await axios.post('https://ecommerce-vscs.onrender.com/api/update-user-data/', user_id, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}` // Imposta il token JWT come header della richiesta
                 }
@@ -95,7 +110,7 @@ function ProfileAccount() {
     // Funzione di logout
     async function handleLogout() {
         try {
-            await axios.post('https://ecommerce-vscs.onrender.com/api/logout'); // Richiesta all'API di logout
+            await axios.post('https://ecommerce-vscs.onrender.com/api/logout/'); // Richiesta all'API di logout
             localStorage.removeItem('token'); // Elimina il token JWT dal local storage
             setIsLoggedIn(false);
             setRedirect(true);
