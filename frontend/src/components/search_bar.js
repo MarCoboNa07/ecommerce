@@ -14,7 +14,7 @@ function SearchBar() {
         setSearchItem(e.target.value);
     }
 
-    // Funzione che invia una richiesta al server Django e restituisce la risposta
+    // Funzione che invia una richiesta al server e restituisce la risposta
     async function handelSubmit(e) {
         e.preventDefault();
         try {
@@ -22,7 +22,7 @@ function SearchBar() {
             setSearchResult(response.data);
             navigate(`/search?q=${searchItem}`, { state: { searchResult: response.data } }); // Reindirizza alla pagina dei prodotti e passa i prodotti inviati dal server Django come stato
         } catch (error) {
-            console.error("Error searching for products: ", error); // Errore nella ricerca dei prodotti restituito dal server Django
+            console.error("Error searching for products: ", error); // Errore nella ricerca dei prodotti
         }
     }
 

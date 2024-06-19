@@ -17,7 +17,7 @@ router.get('/search', async (req, res) => {
         }
 
         // Ricerca dei prodotti nel database
-        const sql = "SELECT * FROM products WHERE product_name LIKE ?";
+        const sql = "SELECT * FROM products WHERE name LIKE ?";
         const products = await query(sql, [`%${searchQuery}%`]);
 
         res.json(products);
