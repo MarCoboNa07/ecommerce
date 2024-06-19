@@ -9,6 +9,8 @@ const getUserData = require('./authentication/get_user_data');
 const logout = require('./authentication/logout');
 const updateUserData = require('./authentication/update_user_data');
 
+const bestseller = require('./products/bestseller');
+
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -22,6 +24,7 @@ app.use('/api', login);
 app.use('/api', getUserData);
 app.use('/api', logout);
 app.use('/api', updateUserData);
+app.use('/api', bestseller);
 
 // Avvio del server
 app.listen(port, () => {
