@@ -18,3 +18,5 @@ router.get('/bestseller', async (req, res) => {
         res.status(500).json({ error: "Errore durante il recupero dei prodotti" });
     }
 });
+
+module.exports = router;
