@@ -11,7 +11,7 @@ function Bestseller() {
     useEffect(() => {
         async function getBestsellerProducts() {
             try {
-                const response = await axios.get('/api/bestseller/');
+                const response = await axios.get('https://ecommerce-vscs.onrender.com/api/bestseller/');
                 setBestsellerProducts(response.data);
             } catch (error) {
                 console.error("Error to fetch products: ", error);
