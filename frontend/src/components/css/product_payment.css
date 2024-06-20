@@ -1,0 +1,49 @@
+.product-payment-container {
+    display: flex;
+}
+
+.product-payment-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.product-payment-img img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+
+.product-payment-form {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    height: 100vh;
+    padding: 0 30px;
+}
+
+@media screen and (max-width: 800px) {
+    .product-payment-container {
+        flex-direction: column;
+    }
+
+    .product-payment-img {
+        width: 100%;
+        height: auto;
+        margin: 40px 0;
+    }
+
+    .product-payment-img img {
+        width: 40%;
+        height: 40%;
+    }
+
+    .product-payment-form {
+        width: 100%;
+        height: auto;
+        padding: 0;
+    }
+}

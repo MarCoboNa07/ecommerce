@@ -1,0 +1,22 @@
+.search-page-container {
+    margin: 40px 0 60px 0;
+}
+
+.search-results {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 12px 40px 0 40px;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
+
+@media screen and (max-width: 800px) {
+    .search-page-container {
+        margin: 0 0 100px 0;
+    }
+}
