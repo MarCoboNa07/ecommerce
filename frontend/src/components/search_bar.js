@@ -18,7 +18,7 @@ function SearchBar() {
     async function handelSubmit(e) {
         e.preventDefault();
         try {
-            const response = await axios.get(`/api/search/?q=${searchItem}`); // Risposta del server
+            const response = await axios.get(`https://ecommerce-vscs.onrender.com/api/search/?q=${searchItem}`); // Risposta del server
             setSearchResult(response.data);
             navigate(`/search?q=${searchItem}`, { state: { searchResult: response.data } }); // Reindirizza alla pagina dei prodotti e passa i prodotti inviati dal server Django come stato
         } catch (error) {
