@@ -39,7 +39,7 @@ function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            const response = await axios.post('https://ecommerce-vscs.onrender.com/api/register/', formData); // Risposta del server
+            const response = await axios.post('https://ecommerce-vscs.onrender.com/api/login/', formData); // Risposta del server
 
             localStorage.setItem('token', response.data.token) // Salva il token JWT nel local storage
             setIsLoggedIn(true);
