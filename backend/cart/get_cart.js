@@ -25,26 +25,21 @@ function token(req, res, next) {
     });
 }
 
-// Route per la ricerca dei dati utente nel database
-router.get('/user', token, async (req, res) => {
+router.get('/cart/get-cart', token, async (req, res) => {
+    const user_id = req.user.user_id;
+
     try {
-        const user_id = req.user.user_id; // Ottieni l'id dal token jwt
+        const [cart] = await query("SELECT items, totalPrice FROM cart WHERE user_id = ?", [user_id]); // Cerca il carrello nel database
 
-        // Cerca l'utente in base allo user_id
-        const sql = 'SELECT * FROM users WHERE user_id = ?';
-        const userData = await query(sql, [user_id]);
-
-        // Nessun utente trovato
-        if (userData.length === 0) {
-            return res.status(404).json({ error: 'Utente non trovato' });
+        // Il carrello non esiste
+        if (cart.legth === 0) {
+            return res.status(404).json({ error: "Carrello non trovato" });
         }
 
-        // Rimuovi eventuali campi sensibili o non necessari prima di inviare i dati al client
-        const { password, ...userWithoutPassword } = userData[0];
-        res.json(userWithoutPassword);
+        res.json({ items: JSON.parse(cart[0].items), totalPrice: cart[0].totalPrice });
     } catch (error) {
-        console.error('Failed to fetch user data:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error("Errore durante la fetch del carrello: ", error);
+        res.status(500).json({ error: "Errore durante la fetch del carrello" });
     }
 });
 

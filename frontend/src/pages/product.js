@@ -110,7 +110,7 @@ function Product() {
     // Funzione per ottenere l'id dell'utente dal database
     async function getUserId(token) {
         try {
-            const response = await axios.get('/api/user/', { // Risposta del server Django
+            const response = await axios.get('https://ecommerce-vscs.onrender.com/api/user/', { // Risposta del server Django
                 headers: {
                     'Authorization': `Bearer ${token}` // Imposta il token JWT come header della richiesta
                 }
@@ -141,13 +141,13 @@ function Product() {
                 productQuantity: productQuantity,
             };
 
-            // Oggetto che condiene i parametri per la richiesta al server Django
+            // Oggetto che condiene i parametri per la richiesta al server
             const requestData = {
                 user_id: userId,
                 items: productData,
             }
 
-            const response = await axios.post('/api/cart/add-to-cart/', requestData, { headers }); // Risposta del server Django
+            const response = await axios.post('https://ecommerce-vscs.onrender.com/api/cart/add-to-cart/', requestData, { headers }); // Risposta del server
             navigate('/cart?addToCart=true'); // Reindirizza l'utente al carrello
         } catch (error) {
             console.error('Errore while adding to cart:', error); // Errore nell'aggiunta del prodotto al carrello
@@ -183,7 +183,7 @@ function Product() {
     // Funzione per ottenere l'id dell'utente dal database
     async function getUserIdForRedirect(token) {
         try {
-            const response = await axios.get('/api/user/', { // Risposta del server Django
+            const response = await axios.get('https://ecommerce-vscs.onrender.com/api/user/', { // Risposta del server Django
                 headers: {
                     'Authorization': `Bearer ${token}` // Imposta il token JWT come header della richiesta
                 }

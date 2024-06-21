@@ -58,7 +58,7 @@ function Cart() {
     // Funzione per ottenere l'id dell'utente dal database
     async function getUserId(token) {
         try {
-            const response = await axios.get('/api/user/', { // Risposta del server Django
+            const response = await axios.get('https://ecommerce-vscs.onrender.com/api/user/', { // Risposta del server Django
                 headers: {
                     'Authorization': `Bearer ${token}` // Imposta il token JWT come header della richiesta
                 }
@@ -84,7 +84,7 @@ function Cart() {
         }
 
         try {
-            const response = await axios.get('/api/cart/get-cart/', { // Risposta del server Django
+            const response = await axios.get('https://ecommerce-vscs.onrender.com/api/cart/get-cart/', { // Risposta del server Django
                 params,
                 headers
             });
@@ -117,7 +117,7 @@ function Cart() {
         }
 
         try {
-            const response = await axios.get('/api/cart/get-total-price/', { // Risposta del server Django
+            const response = await axios.get('https://ecommerce-vscs.onrender.com/api/cart/get-total-price/', { // Risposta del server Django
                 params,
                 headers
             });

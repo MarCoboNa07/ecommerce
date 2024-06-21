@@ -3,9 +3,8 @@ const { promisify } = require('util'); // Modulo util per convertire callback in
 const conn = require('../db_connection'); // Importazione della connessione al database
 require('dotenv').config(); // Importazione modulo dotenv per l'utilizzo di variabili d'ambiente
 
-const router = express.Router();
-
-const query = promisify(conn.query).bind(conn);
+const router = express.Router(); // Inizializzazione di un oggetto router
+const query = promisify(conn.query).bind(conn); // Permette di far eseguire le query del database in modo asincrono
 
 // Route per la ricerca dei prodotti
 router.get('/search', async (req, res) => {
@@ -27,4 +26,4 @@ router.get('/search', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router; // Esportazione della route

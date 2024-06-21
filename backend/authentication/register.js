@@ -5,9 +5,8 @@ const { promisify } = require('util'); // Modulo util per convertire callback in
 const crypto = require('crypto'); // Importazione del modulo crypto
 const conn = require('../db_connection'); // Importazione della connessione al database
 
-const router = express.Router();
-
-const query = promisify(conn.query).bind(conn);
+const router = express.Router(); // Inizializzazione di un oggetto router
+const query = promisify(conn.query).bind(conn); // Permette di far eseguire le query del database in modo asincrono
 
 // Funzione che genera una stringa random di 30 caratteri in funzione di user_id
 function generateUserId(length) {
@@ -18,8 +17,9 @@ function generateUserId(length) {
         .replace(/\//g, '0')
 }
 
+// Route per la registrazione
 router.post('/register', async (req, res) => {
-    const { firstName, lastName, email, password, confirmPassword } = req.body;
+    const { firstName, lastName, email, password, confirmPassword } = req.body; // Lettura dei dati inviati nel form
 
     // Verifica se le password coincidono
     if (password !== confirmPassword) {
@@ -30,8 +30,9 @@ router.post('/register', async (req, res) => {
         // Verifica se l'email è già registrata
         const existingUsers = await query('SELECT * FROM users WHERE email = ?', [email]);
 
+        // Email già registrata
         if (existingUsers.length > 0) {
-            return res.status(409).json({ error: 'Email già registrata' }); // Restituisce un errore se l'email è già registrata
+            return res.status(409).json({ error: 'Email già registrata' });
         }
 
         // Hash della password
@@ -43,7 +44,7 @@ router.post('/register', async (req, res) => {
         // Inserimento dei dati nel database
         await query('INSERT INTO users (user_id, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)', [user_id, firstName, lastName, email, hashedPassword]);
 
-        // Generazione del token jwt
+        // Generazione del token jwt (1 ora) e del refresh token (7 giorni)
         const token = jwt.sign({ user_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         const refreshToken = jwt.sign({ user_id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
         
@@ -54,5 +55,4 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Esportazione della route
-module.exports = router;
+module.exports = router; // Esportazione della route
